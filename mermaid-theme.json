@@ -1,0 +1,23 @@
+{
+  "_comment": "Mermaid theme. Single source of truth for mapping beautiful-mermaid's color roles onto this palette (tokens.json). Keep hex values in sync with tokens.json. Dark variant for screen output; print diagrams flatten to the eggshell set noted in roles.",
+  "colors": {
+    "bg": "#000000",
+    "fg": "#ffffff",
+    "line": "#ffffff80",
+    "accent": "#40b3ff",
+    "muted": "#ffffff66",
+    "surface": "#1e1f20",
+    "border": "#ffffff21"
+  },
+  "roles": {
+    "bg": "--void        · diagram canvas, edge-label masks (print: --eggshell #f1f4f4)",
+    "fg": "--ink         · node text, primary strokes (print: --void #000000)",
+    "line": "--ink-50      · edge connectors (print: --print-ink-50 #808080)",
+    "accent": "--cyan   · arrow heads / focal emphasis (print: --nebula-navy #1a2340)",
+    "muted": "--ink-40    · secondary text, edge labels (print: --print-ink-40 #666666)",
+    "surface": "--surface-2  · node fill (print: --paper #ffffff)",
+    "border": "--stroke-13 · node / group stroke (print: --edge-light #e1e1e1)"
+  },
+  "renderFont": "Space Grotesk",
+  "cssFontStack": "\"Space Grotesk\", \"The Future\", ui-sans-serif, system-ui, sans-serif"
+}

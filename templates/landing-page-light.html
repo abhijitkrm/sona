@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meridian - One workspace for your team's work</title>
+<meta name="description" content="Meridian brings projects, docs, and reporting into one fast, flexible workspace.">
+<meta property="og:title" content="Meridian - One workspace for your team's work">
+<meta property="og:description" content="Projects, docs, and reporting in one fast, flexible workspace.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='%231a2340'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Design tokens - keep in sync with tokens.json.
+   python3 scripts/check_tokens.py enforces the register.
+
+   LIGHT VARIANT: page runs on the eggshell surface set.
+   Text ladder on light: #000 primary, #212121 secondary,
+   #808080 tertiary. Hairlines: --edge-light. Accent: navy.
+   ============================================================ */
+:root {
+  --void:           #000000;
+  --ink:            #ffffff;
+  --ink-80:         #ffffffcc;
+  --ink-60:         #ffffff99;
+  --ink-50:         #ffffff80;
+  --ink-40:         #ffffff66;
+  --ink-30:         #ffffff4d;
+  --fill-20:        #ffffff33;
+  --fill-10:        #ffffff1a;
+  --fill-5:         #ffffff0d;
+  --stroke-50:      #ffffff80;
+  --stroke-20:      #ffffff33;
+  --stroke-13:      #ffffff21;
+  --surface-1:      #181818;
+  --surface-2:      #1e1f20;
+  --surface-3:      #212121;
+  --edge:           #37383a;
+  --eggshell:       #f1f4f4;
+  --eggshell-dark:  #cfdadc;
+  --paper:          #ffffff;
+  --edge-light:     #e1e1e1;
+  --gray-medium:    #bbbbbb;
+  --gray-mid:       #808080;
+  --mint:           #22e2a8;
+  --cyan:           #40b3ff;
+  --nebula-navy:    #1a2340;
+  --nebula-violet:  #c98bd8;
+  --nebula-pink:    #f2a7b8;
+  --nebula-peach:   #f6d6c2;
+  --sans: "Space Grotesk", "The Future", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", "The Future Mono", "Space Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --radius-sm: 10px;
+  --radius-md: 20px;
+  --radius-lg: 30px;
+  --radius-pill: 999px;
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 150ms;
+  --dur-med: 300ms;
+  --dur-slow: 700ms;
+  --dur-flow: 5s;
+  --shadow-card: 0 2px 10px rgba(30, 31, 32, 0.10);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--eggshell);
+  color: var(--void);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--nebula-navy); text-decoration: none; }
+a:hover { color: var(--void); }
+a:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--nebula-navy); outline-offset: 3px; border-radius: 4px;
+}
+.container { width: 100%; max-width: 1440px; margin: 0 auto; padding: 0 100px; }
+
+/* ---------- Nav ---------- */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: var(--eggshell);
+  border-bottom: 1px solid var(--edge-light);
+}
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 68px;
+}
+.wordmark {
+  font-weight: 500; font-size: 18px; color: var(--void);
+  display: flex; align-items: center; gap: 10px;
+}
+.wordmark .dot {
+  width: 10px; height: 10px; border-radius: 999px;
+  background: var(--nebula-navy);
+}
+.nav-links { display: flex; align-items: center; gap: 28px; }
+.nav-links a {
+  font-size: 16px; letter-spacing: 0.32px;
+  color: var(--gray-mid); transition: color var(--dur-fast) var(--ease-out);
+}
+.nav-links a:hover { color: var(--void); }
+
+/* ---------- Pills ---------- */
+.pill {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 42px; padding: 0 20px;
+  border-radius: var(--radius-pill);
+  font-family: var(--sans); font-size: 15px; font-weight: 500;
+  letter-spacing: 0.32px; white-space: nowrap; cursor: pointer;
+  background: var(--paper); color: var(--void);
+  border: 1px solid var(--eggshell-dark);
+  transition: all var(--dur-med) var(--ease-in-out);
+}
+.pill:hover { background: var(--void); color: var(--ink); border-color: var(--void); }
+.pill-solid { background: var(--void); color: var(--ink); border-color: var(--void); }
+.pill-solid:hover { background: var(--surface-3); border-color: var(--surface-3); }
+.pill.small { height: 34px; padding: 0 14px; font-size: 12px; }
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative;
+  min-height: 100svh; max-height: 1100px;
+  display: flex; align-items: center;
+  overflow: hidden;
+}
+.starfield {
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(#37383a 1.2px, transparent 1.6px),
+    radial-gradient(#bbbbbb 1px, transparent 1.4px);
+  background-size: 130px 130px, 34px 34px;
+  background-position: 18px 34px, 0 0;
+  opacity: 0.45;
+  mask-image: linear-gradient(to bottom, black 40%, transparent 92%);
+  -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 92%);
+}
+.hero-content {
+  position: relative; z-index: 1; padding-top: 68px;
+  display: grid; grid-template-columns: 1.05fr 0.95fr;
+  gap: 64px; align-items: center;
+}
+.hero-content > div { min-width: 0; }
+.hero .eyebrow { margin-bottom: 18px; }
+.hero h1 {
+  font-size: clamp(40px, 6.2vw, 88px); font-weight: 500; line-height: 1.08;
+  letter-spacing: -0.01em; max-width: 13em; color: var(--void);
+}
+.hero .lede {
+  margin-top: 28px;
+  font-size: 18px; line-height: 1.5; letter-spacing: 0.02em;
+  color: var(--surface-3); max-width: 560px;
+}
+.hero .cta-row { display: flex; gap: 14px; margin-top: 40px; flex-wrap: wrap; }
+.chip-row {
+  display: flex; gap: 10px; margin-top: 36px; flex-wrap: wrap;
+}
+.chip {
+  font-family: var(--mono); font-size: 12px; font-weight: 500;
+  letter-spacing: 0.48px; text-transform: uppercase;
+  color: var(--gray-mid);
+  background: var(--paper);
+  border: 1px solid var(--edge-light);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+}
+.chip .live { color: var(--nebula-navy); }
+
+/* ---------- Product mock ---------- */
+.mock {
+  background: var(--paper); border: 1px solid var(--edge-light);
+  border-radius: var(--radius-md); overflow: hidden;
+  box-shadow: var(--shadow-card);
+  min-width: 0;
+}
+.mock-bar {
+  display: flex; gap: 7px; align-items: center;
+  padding: 11px 16px; border-bottom: 1px solid var(--edge-light);
+}
+.mock-bar i { width: 9px; height: 9px; border-radius: 50%; background: var(--edge-light); }
+.mock-bar .mock-title {
+  margin-left: 8px; font-family: var(--mono); font-size: 11px;
+  letter-spacing: 0.48px; color: var(--gray-mid); text-transform: uppercase;
+}
+.mock-body { display: grid; grid-template-columns: 96px minmax(0, 1fr); min-height: 260px; }
+.mock-side { border-right: 1px solid var(--edge-light); padding: 14px 12px; }
+.mock-side .ms {
+  display: block; height: 5px; border-radius: 3px;
+  background: var(--edge-light); margin-bottom: 10px;
+}
+.mock-side .ms.on { background: var(--gray-medium); }
+.mock-main { padding: 18px; min-width: 0; }
+.mock-main .mh { height: 7px; width: 45%; border-radius: 4px; background: var(--edge-light); margin-bottom: 16px; }
+.task {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 0; border-bottom: 1px solid var(--edge-light);
+}
+.task:last-child { border-bottom: none; }
+.task .tdot { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--eggshell-dark); flex: none; }
+.task .tdot.done { background: var(--nebula-navy); border-color: var(--nebula-navy); }
+.task .tl { height: 5px; border-radius: 3px; background: var(--edge-light); flex: 1; min-width: 0; }
+.task .tchip {
+  flex: none; font-family: var(--mono); font-size: 9px; letter-spacing: 0.48px;
+  text-transform: uppercase; padding: 2px 8px; border-radius: var(--radius-pill);
+  border: 1px solid var(--edge-light); color: var(--gray-mid);
+}
+.task .tchip.navy { color: var(--nebula-navy); border-color: var(--eggshell-dark); }
+
+/* ---------- Stat strip ---------- */
+.stats-wrap { padding: 48px 0 96px; }
+.stats {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--edge-light);
+  border-bottom: 1px solid var(--edge-light);
+}
+.stat { padding: 28px 24px; min-width: 0; }
+.stat + .stat { border-left: 1px solid var(--edge-light); }
+.stat .num {
+  font-size: 34px; font-weight: 500; letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums; color: var(--void);
+}
+.stat .lbl {
+  margin-top: 6px; font-family: var(--mono); font-size: 12px;
+  letter-spacing: 0.48px; text-transform: uppercase; color: var(--gray-mid);
+}
+
+/* ---------- Sections ---------- */
+section { padding: 108px 0; scroll-margin-top: 80px; }
+.section-head { margin-bottom: 56px; }
+.eyebrow {
+  font-family: var(--mono); font-size: 12px; font-weight: 500;
+  letter-spacing: 0.48px; text-transform: uppercase;
+  color: var(--gray-mid); margin-bottom: 16px;
+}
+h2 { font-size: 32px; font-weight: 500; line-height: 1.25; color: var(--void); max-width: 20em; }
+.section-lede { margin-top: 16px; font-size: 18px; color: var(--surface-3); max-width: 720px; }
+
+/* ---------- Cards ---------- */
+.card-grid {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px;
+}
+.card {
+  background: var(--paper);
+  border: 1px solid var(--edge-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 28px;
+}
+.card .card-label {
+  font-family: var(--mono); font-size: 12px; font-weight: 500;
+  letter-spacing: 0.48px; text-transform: uppercase; color: var(--gray-mid);
+}
+.card h3 { font-size: 22px; font-weight: 500; line-height: 1.3; margin: 14px 0 10px; color: var(--void); }
+.card p { font-size: 15px; line-height: 1.5; color: var(--surface-3); }
+
+/* ---------- Feature rows ---------- */
+.features { border-top: 1px solid var(--edge-light); }
+.feature {
+  display: grid; grid-template-columns: 220px 1fr; gap: 36px;
+  padding: 28px 0; border-bottom: 1px solid var(--edge-light);
+  align-items: baseline;
+}
+.feature-name { font-size: 22px; font-weight: 500; color: var(--void); }
+.feature-desc { font-size: 15px; line-height: 1.5; color: var(--surface-3); max-width: 640px; }
+
+/* ---------- Code (deliberate dark island on the light page) ---------- */
+.code-block {
+  background: var(--surface-1);
+  border: 1px solid var(--surface-1);
+  border-radius: var(--radius-sm);
+  padding: 18px 22px;
+  font-family: var(--mono); font-size: 13.5px; line-height: 1.55;
+  color: var(--ink-80);
+  overflow-x: auto;
+}
+.code-block .c { color: var(--ink-50); }
+.code-block .k { color: var(--cyan); }
+.code-block .s { color: var(--mint); }
+.code-block .n { color: var(--nebula-pink); }
+.code-block .f { color: var(--nebula-violet); }
+
+/* ---------- Logo wall ---------- */
+.wall { border-top: 1px solid var(--edge-light); border-bottom: 1px solid var(--edge-light); padding: 36px 0; overflow: hidden; }
+.wall-track { display: flex; gap: 72px; width: max-content; animation: scroll 36s linear infinite; }
+.wall:hover .wall-track { animation-play-state: paused; }
+.wall-track span {
+  font-size: 18px; font-weight: 500; color: var(--gray-medium);
+  white-space: nowrap; letter-spacing: 0.02em;
+}
+@keyframes scroll { to { transform: translateX(-50%); } }
+
+/* ---------- Table ---------- */
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th {
+  text-align: left; font-family: var(--mono); font-size: 12px; font-weight: 500;
+  letter-spacing: 0.48px; text-transform: uppercase; color: var(--gray-mid);
+  padding: 8px 12px; border-bottom: 1px solid var(--eggshell-dark);
+}
+td { padding: 10px 12px; border-bottom: 1px solid var(--edge-light); color: var(--surface-3); }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+td:first-child { color: var(--void); }
+
+/* ---------- Pricing ---------- */
+.price-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.price-card {
+  background: var(--paper); border: 1px solid var(--edge-light);
+  border-radius: var(--radius-md); box-shadow: var(--shadow-card);
+  padding: 28px;
+  display: flex; flex-direction: column; min-width: 0;
+}
+.price-card.hot { border-color: var(--nebula-navy); }
+.price-card .plan {
+  font-family: var(--mono); font-size: 12px; font-weight: 500;
+  letter-spacing: 0.48px; text-transform: uppercase; color: var(--gray-mid);
+}
+.price-card.hot .plan { color: var(--nebula-navy); }
+.price-card .amount { margin: 14px 0 4px; font-size: 40px; font-weight: 500; letter-spacing: -0.01em; color: var(--void); }
+.price-card .amount .per { font-size: 14px; color: var(--gray-mid); font-weight: 400; letter-spacing: 0.02em; }
+.price-card .for { font-size: 13px; color: var(--gray-mid); margin-bottom: 20px; }
+.price-card ul { list-style: none; margin-bottom: 26px; flex: 1; }
+.price-card li {
+  font-size: 14px; color: var(--surface-3); padding: 6px 0 6px 22px;
+  position: relative;
+}
+.price-card li::before {
+  content: "\2713"; position: absolute; left: 0; color: var(--nebula-navy);
+  font-size: 12px; top: 9px;
+}
+.price-card .pill { align-self: flex-start; }
+
+/* ---------- FAQ ---------- */
+.faq-item { border-top: 1px solid var(--edge-light); }
+.faq-item:last-child { border-bottom: 1px solid var(--edge-light); }
+.faq-item summary {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 0; font-size: 16px; font-weight: 500; color: var(--void);
+  cursor: pointer; list-style: none;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: "+"; font-family: var(--mono); font-size: 18px;
+  color: var(--gray-mid); transition: transform var(--dur-med) var(--ease-out);
+}
+.faq-item[open] summary::after { transform: rotate(45deg); }
+.faq-answer { padding: 0 0 22px; font-size: 14px; line-height: 1.55; color: var(--surface-3); max-width: 660px; }
+
+/* ---------- Closing band ---------- */
+.closing {
+  border-radius: var(--radius-lg);
+  background: var(--nebula-navy);
+  padding: 96px 64px;
+  text-align: center;
+}
+.closing h2 { margin: 0 auto 12px; max-width: 16em; color: var(--ink); }
+.closing p { color: var(--ink-80); font-size: 18px; max-width: 560px; margin: 0 auto 36px; }
+.closing .pill-solid {
+  background: var(--paper); color: var(--nebula-navy); border-color: var(--paper);
+}
+.closing .pill-solid:hover { background: var(--eggshell); border-color: var(--eggshell); }
+
+/* ---------- Footer ---------- */
+footer { border-top: 1px solid var(--edge-light); padding: 64px 0 48px; margin-top: 108px; }
+.footer-grid { display: flex; justify-content: space-between; gap: 48px; }
+.footer-brand { max-width: 320px; }
+.footer-brand .tag { margin-top: 14px; font-size: 13px; line-height: 1.5; color: var(--gray-mid); }
+.footer-links { display: flex; gap: 72px; }
+.footer-links .col-label {
+  font-family: var(--mono); font-size: 12px; font-weight: 500;
+  letter-spacing: 0.48px; text-transform: uppercase; color: var(--gray-mid);
+  margin-bottom: 14px;
+}
+.footer-links a { display: block; font-size: 14px; color: var(--surface-3); padding: 4px 0; }
+.footer-links a:hover { color: var(--void); }
+.legal { margin-top: 56px; font-size: 12px; color: var(--gray-mid); letter-spacing: 0.48px; }
+
+/* ---------- Reveal ---------- */
+.reveal { opacity: 0; transform: translateY(32px); transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out); }
+.reveal.in { opacity: 1; transform: none; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1024px) {
+  .container { padding: 0 30px; }
+  section { padding: 72px 0; }
+  .hero-content { grid-template-columns: 1fr; gap: 48px; padding-bottom: 96px; }
+  .mock { max-width: 560px; }
+  .card-grid, .price-grid { grid-template-columns: 1fr; }
+  .feature { grid-template-columns: 1fr; gap: 10px; }
+  .nav-links a:not(.pill) { display: none; }
+  .footer-grid { flex-direction: column; }
+  .closing { padding: 64px 28px; }
+}
+@media (max-width: 640px) {
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stat + .stat { border-left: none; }
+  .stat:nth-child(even) { border-left: 1px solid var(--edge-light); }
+  .stat:nth-child(n+3) { border-top: 1px solid var(--edge-light); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .wall-track { animation: none; }
+  html { scroll-behavior: auto; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <span class="wordmark"><span class="dot"></span>Meridian</span>
+    <div class="nav-links">
+      <a href="#product">Product</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact" class="pill small">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="starfield"></div>
+  <div class="container hero-content">
+    <div>
+      <div class="eyebrow">Workspace platform &middot; v2.0</div>
+      <h1>One calm workspace for everything your team ships</h1>
+      <p class="lede">Meridian brings projects, docs, and reporting into a
+      single fast workspace, so your team spends less time switching
+      tools and more time doing the work.</p>
+      <div class="cta-row">
+        <a href="#contact" class="pill pill-solid">Get started</a>
+        <a href="#product" class="pill">See the product</a>
+      </div>
+      <div class="chip-row">
+        <span class="chip"><span class="live">&#9679;</span> Fast by default</span>
+        <span class="chip">Works offline</span>
+        <span class="chip">Open API</span>
+      </div>
+    </div>
+    <div class="mock" aria-hidden="true">
+      <div class="mock-bar"><i></i><i></i><i></i><span class="mock-title">meridian &middot; atlas</span></div>
+      <div class="mock-body">
+        <div class="mock-side">
+          <span class="ms on"></span><span class="ms"></span><span class="ms"></span><span class="ms"></span>
+        </div>
+        <div class="mock-main">
+          <div class="mh"></div>
+          <div class="task"><i class="tdot done"></i><span class="tl" style="max-width:62%"></span><span class="tchip navy">Done</span></div>
+          <div class="task"><i class="tdot"></i><span class="tl" style="max-width:80%"></span><span class="tchip navy">Active</span></div>
+          <div class="task"><i class="tdot"></i><span class="tl" style="max-width:48%"></span><span class="tchip">Queued</span></div>
+          <div class="task"><i class="tdot"></i><span class="tl" style="max-width:70%"></span><span class="tchip">Queued</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container stats-wrap">
+  <div class="stats">
+    <div class="stat"><div class="num">12k+</div><div class="lbl">Teams on board</div></div>
+    <div class="stat"><div class="num">40%</div><div class="lbl">Less busywork</div></div>
+    <div class="stat"><div class="num">99.99%</div><div class="lbl">Uptime last year</div></div>
+    <div class="stat"><div class="num">4.9/5</div><div class="lbl">Average rating</div></div>
+  </div>
+</div>
+
+<section id="product">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">01 &middot; The product</div>
+      <h2>Everything your team needs, in one place</h2>
+      <p class="section-lede">Three modules that share one data model, so
+      nothing gets lost between tools.</p>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-label">Plan</div>
+        <h3>Projects</h3>
+        <p>Plan, assign, and track work without spreadsheet sprawl or
+        status meetings.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Write</div>
+        <h3>Docs</h3>
+        <p>Specs and notes that live next to the work they describe,
+        always up to date.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Measure</div>
+        <h3>Reports</h3>
+        <p>Progress and workload views that update themselves as work
+        moves.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="why">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">02 &middot; Why Meridian</div>
+      <h2>Built for teams that ship every week</h2>
+    </div>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-name">Fast</div>
+        <div class="feature-desc">Instant sync and sub-100ms interactions,
+        even on large workspaces.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-name">Flexible</div>
+        <div class="feature-desc">Custom fields and views your team
+        configures itself, no admin ticket required.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-name">Private</div>
+        <div class="feature-desc">Your data stays yours. Full export at
+        any time, no lock-in tricks.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-name">Supported</div>
+        <div class="feature-desc">Real humans on support, with a median
+        first response under an hour.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="wall" aria-hidden="true">
+    <div class="wall-track">
+      <span>Nova</span><span>Helios</span><span>Arcadia</span>
+      <span>Vector</span><span>Polaris</span><span>Keystone</span>
+      <span>Nova</span><span>Helios</span><span>Arcadia</span>
+      <span>Vector</span><span>Polaris</span><span>Keystone</span>
+    </div>
+  </div>
+</div>
+
+<section id="customers">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">03 &middot; Customers</div>
+      <h2>Teams running Meridian today</h2>
+    </div>
+    <table>
+      <thead>
+        <tr><th>Team</th><th>Use case</th><th class="num">Seats</th><th class="num">Since</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Acme</td><td>Product engineering</td><td class="num">240</td><td class="num">2023</td></tr>
+        <tr><td>Helios</td><td>Design operations</td><td class="num">85</td><td class="num">2024</td></tr>
+        <tr><td>Keystone</td><td>Field operations</td><td class="num">1,400</td><td class="num">2022</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="developers">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">04 &middot; Developers</div>
+      <h2>An API your team will actually use</h2>
+      <p class="section-lede">Everything in the interface maps to a call.
+      Create and share a project in four lines.</p>
+    </div>
+    <pre class="code-block"><code><span class="c"># create and share a project in four lines</span>
+<span class="k">import</span> meridian
+
+project = meridian.<span class="f">Project</span>(name=<span class="s">"atlas"</span>, members=<span class="n">4</span>)
+project.<span class="f">share</span>(<span class="s">"team@acme.co"</span>)</code></pre>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">05 &middot; Pricing</div>
+      <h2>Start free, pay when you grow</h2>
+      <p class="section-lede">Placeholder tiers for the pattern. Swap in
+      real prices and limits.</p>
+    </div>
+    <div class="price-grid">
+      <div class="price-card">
+        <div class="plan">Starter</div>
+        <div class="amount">$0</div>
+        <div class="for">For small teams getting started</div>
+        <ul>
+          <li>Up to 10 seats</li>
+          <li>All core modules</li>
+          <li>Community support</li>
+        </ul>
+        <a href="#contact" class="pill">Start free</a>
+      </div>
+      <div class="price-card hot">
+        <div class="plan">Team</div>
+        <div class="amount">$8<span class="per"> / seat / mo</span></div>
+        <div class="for">For teams that ship every week</div>
+        <ul>
+          <li>Unlimited seats</li>
+          <li>Custom fields and views</li>
+          <li>Priority support</li>
+          <li>Open API access</li>
+        </ul>
+        <a href="#contact" class="pill pill-solid">Start trial</a>
+      </div>
+      <div class="price-card">
+        <div class="plan">Enterprise</div>
+        <div class="amount">Custom</div>
+        <div class="for">For regulated or large orgs</div>
+        <ul>
+          <li>SSO and audit logs</li>
+          <li>Region-pinned hosting</li>
+          <li>Dedicated support</li>
+        </ul>
+        <a href="#contact" class="pill">Talk to us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">06 &middot; FAQ</div>
+      <h2>Common questions</h2>
+    </div>
+    <details class="faq-item">
+      <summary>Is there a free tier?</summary>
+      <div class="faq-answer">Yes. Up to 10 seats, full features, no time
+      limit. Paid plans start when you need more seats or controls.</div>
+    </details>
+    <details class="faq-item">
+      <summary>Can we import from our current tools?</summary>
+      <div class="faq-answer">One-click importers cover the common project
+      and doc tools, and the open API handles the rest.</div>
+    </details>
+    <details class="faq-item">
+      <summary>Where is our data hosted?</summary>
+      <div class="faq-answer">In the region you choose, encrypted at rest
+      and in transit, with full export available anytime.</div>
+    </details>
+  </div>
+</section>
+
+<section id="contact" style="padding-top: 0;">
+  <div class="container">
+    <div class="closing">
+      <h2>See what Meridian does for your team</h2>
+      <p>A twenty-minute demo against your actual workflow, not a slide
+      deck.</p>
+      <a href="#contact" class="pill pill-solid">Book a demo</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="wordmark"><span class="dot"></span>Meridian</span>
+        <p class="tag">One calm workspace for projects, docs, and
+        reports. A fictional product; the design system is the
+        deliverable.</p>
+      </div>
+      <div class="footer-links">
+        <div>
+          <div class="col-label">Product</div>
+          <a href="#product">Overview</a><a href="#customers">Customers</a><a href="#pricing">Pricing</a>
+        </div>
+        <div>
+          <div class="col-label">Resources</div>
+          <a href="#developers">Developers</a><a href="#faq">FAQ</a><a href="#contact">Contact</a>
+        </div>
+      </div>
+    </div>
+    <p class="legal">&copy; 2026 MERIDIAN LABS &middot; DEMO PAGE FOR THE DESIGN SYSTEM</p>
+  </div>
+</footer>
+
+<script>
+// Entrance reveal - 700ms ease-out, once, off under reduced motion.
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const io = new IntersectionObserver((es) => {
+    es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('section, .stats-wrap, .wall').forEach(el => {
+    el.classList.add('reveal'); io.observe(el);
+  });
+}
+</script>
+</body>
+</html>
