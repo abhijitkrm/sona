@@ -1,11 +1,79 @@
-# Sona Design System
+# Sona
 
-A design system for landing pages and printable documents:
-self-contained HTML templates, a canonical token register, and a full
-spec. Dark-first on screen; eggshell covers light mode and print.
+**Every pixel answers to the register.**
 
-**Aesthetic**: deep-space canvas, starlight type, a starfield carries
-the sky, pills and 20px cards carry structure.
+[![Version](https://img.shields.io/badge/version-1.0-1a2340)](https://github.com/abhijitkrm/sona)
+[![License](https://img.shields.io/badge/license-MIT-22e2a8)](LICENSE)
+[![Tokens](https://img.shields.io/badge/tokens-34-40b3ff)](tokens.json)
+
+## Why
+
+Sona is a design system for landing pages and printable documents: one
+token register, three self-contained HTML templates, and a checker that
+fails the page when a value drifts outside it.
+
+Sona (सोना) means gold in Hindi. The system keeps surfaces calm and
+hierarchy legible: a deep-space canvas, starlight type, a starfield
+carries the sky, and pills and 20px cards carry structure.
+
+Inspired by the restraint of [Kami](https://kami.tw93.fun/) — a
+different palette, the same discipline.
+
+## Showcase
+
+Every page below is rendered entirely with its own tokens. Serve the
+folder and open them, or read the source — the markup is the specimen.
+
+| Page | Mode | What it shows |
+|---|---|---|
+| `site/index.html` | Dark | The full spec rendered live: color ramps, a type wall, 24 components, a dark/light/print mode specimen |
+| `site/index-light.html` | Light | The same showcase on eggshell and paper — both pages toggle dark/light in place |
+| `templates/landing-page.html` | Dark | A screen-first product page: fixed nav, starfield hero, stat strip, cards, marquee, pricing, FAQ |
+| `templates/landing-page-light.html` | Light | The same page remapped to paper, one sanctioned shadow |
+| `templates/one-pager.html` | Print | An eggshell A4 one-pager, solids only, WeasyPrint-ready |
+
+```bash
+python3 -m http.server 8000   # then open http://localhost:8000/site/
+```
+
+## Use
+
+Copy a template, fill in your content, and restyle through the register
+only — a value outside `tokens.json` fails the checker:
+
+```bash
+python3 scripts/check_tokens.py
+```
+
+Print render:
+
+```bash
+weasyprint templates/one-pager.html one-pager.pdf
+```
+
+## Design
+
+- **Register.** `tokens.json` is canonical. Every `var()` reference must
+  resolve and every hex must be registered; the checker is the guard.
+- **Modes.** Dark, light, and print are remaps of the same register, not
+  second palettes. The showcase toggles dark/light in place; islands
+  (code, starfield demos, the navy CTA band) keep their native canvas.
+- **Type.** Space Grotesk carries everything; JetBrains Mono handles
+  labels and numbers. The ladder runs 12px to a fluid 96px display step.
+- **Form.** Radii are `10 / 20 / 30 / 999px` and nothing else. Depth is
+  hairlines; the only sanctioned shadow lives on `--paper` cards.
+- **Components.** Two tiers: primitives (pill, link, tabs, field, alert,
+  chip, card, code, table, blockquote, list, divider) and the patterns
+  they compose into (section head, nav, hero, metrics, stat strip,
+  pricing, CTA band, media frame, marquee, flow line, FAQ, footer).
+- **Motion.** 300ms inversions, 700ms entrances, a 5s beam on live paths.
+  `prefers-reduced-motion` kills all of it.
+- **Print.** Eggshell mode flattens alpha to `--print-ink-*` solids with
+  `--nebula-navy` as the one chromatic voice; the dark page prints light
+  through a media-query remap.
+
+Full spec: [design.md](design.md). Cheatsheet: [CHEATSHEET.md](CHEATSHEET.md).
+Diagram theming: [mermaid-theme.json](mermaid-theme.json).
 
 ## Layout
 
@@ -15,50 +83,24 @@ design.md              Full spec: color, type, spacing, components, motion, prin
 CHEATSHEET.md          One-page quick reference
 mermaid-theme.json     Token -> diagram-theme mapping (dark + print notes)
 templates/
-  landing-page.html    Dark, screen-first page (nav, hero, cards, marquee, pricing, FAQ)
-  landing-page-light.html  Same page on eggshell (light mode variant)
+  landing-page.html    Dark, screen-first page
+  landing-page-light.html  Same page on eggshell
   one-pager.html       Eggshell A4 print template (WeasyPrint-ready)
 site/
-  index.html           The system's own showcase + spec site (dark),
-                       rendered entirely with its own tokens
+  index.html           The system's own showcase + spec site (dark)
   index-light.html     The same showcase in light mode
-                       (both pages toggle dark/light in place)
 scripts/
   check_tokens.py      Drift guard: var() refs and hexes must be registered
 ```
 
-## Use
-
-Open `templates/landing-page.html` in a browser, or serve the folder:
-
-```bash
-python3 -m http.server 8000    # then open http://localhost:8000/templates/landing-page.html
-```
-
-Render the print template:
-
-```bash
-weasyprint templates/one-pager.html one-pager.pdf
-```
-
-Verify token integrity after any style edit:
-
-```bash
-python3 scripts/check_tokens.py
-```
-
-## Rules that bite
-
-- Text hierarchy on dark is the `--ink-*` alpha ladder only; no gray hexes.
-- No gradient treatments: the starfield (hero only) is the only sky
-  texture; closing/cover bands use flat `--nebula-navy`.
-- Radii are `10 / 20 / 30 / 999px` only.
-- Print templates flatten alpha to `--print-ink-*` solids; no 8-digit hex
-  ships to WeasyPrint.
-- New color -> register in `tokens.json` first, then use `var(--*)`.
-
 ## Credits
 
-- Fonts: Space Grotesk and JetBrains Mono (free substitutes for the
-  commercial "The Future" / "The Future Mono"; swap in the licensed
-  families first in each stack if owned).
+- Fonts: [Space Grotesk](https://floriankarsten.github.io/space-grotesk/)
+  and [JetBrains Mono](https://www.jetbrains.com/lp/mono/), loaded from
+  Google Fonts. The stacks keep "The Future" / "The Future Mono" first in
+  line if you own the licensed families.
+- Visual DNA: [Kami](https://github.com/tw93/kami) by tw93.
+
+## License
+
+[MIT](LICENSE)
