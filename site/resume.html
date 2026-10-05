@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Abhijit — Full Stack & Blockchain Engineer.">
+<title>Abhijit &middot; Full Stack &amp; Blockchain Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Resume - Sona light theme (eggshell + paper, navy accent).
+   Prints to A4 on white. Token register: ../tokens.json
+   ============================================================ */
+:root {
+  --void:           #000000;
+  --eggshell:       #f1f4f4;
+  --eggshell-dark:  #cfdadc;
+  --paper:          #ffffff;
+  --edge-light:     #e1e1e1;
+  --gray-medium:    #bbbbbb;
+  --gray-mid:       #808080;
+  --gray-dark:      #666666;
+  --surface-3:      #212121;
+  --mint:           #22e2a8;
+  --cyan:           #40b3ff;
+  --nebula-navy:    #1a2340;
+  --sans: "Space Grotesk", "The Future", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", "The Future Mono", "Space Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --radius-pill: 999px;
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-med: 300ms;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: var(--sans);
+  font-size: 14px; line-height: 1.55;
+  color: var(--void);
+  background: var(--eggshell);
+  -webkit-font-smoothing: antialiased;
+}
+.sheet { max-width: 760px; margin: 0 auto; padding: 64px 28px 72px; }
+
+/* ---------- Header ---------- */
+.hi { font-family: var(--mono); font-size: 12px; color: var(--gray-dark); margin-bottom: 10px; }
+.name { font-size: 40px; font-weight: 500; letter-spacing: -0.03em; line-height: 1.05; }
+.role {
+  margin-top: 8px; font-size: 16px; color: var(--nebula-navy); font-weight: 500;
+}
+.contact {
+  display: flex; gap: 18px; flex-wrap: wrap; margin-top: 16px;
+  font-family: var(--mono); font-size: 12px; color: var(--gray-dark);
+}
+.contact a {
+  color: var(--nebula-navy); text-decoration: none;
+  border-bottom: 1px solid var(--eggshell-dark);
+  transition: border-color var(--dur-med) var(--ease-in-out);
+}
+.contact a:hover { border-bottom-color: var(--nebula-navy); }
+.head-rule { border: none; border-top: 1px solid var(--eggshell-dark); margin: 26px 0 0; }
+
+/* ---------- Summary ---------- */
+.about { font-size: 15px; line-height: 1.65; color: var(--surface-3); max-width: 640px; margin-top: 22px; }
+
+/* ---------- Sections ---------- */
+section { margin-top: 38px; }
+h2 {
+  font-family: var(--mono); font-size: 11px; font-weight: 500;
+  letter-spacing: 0.5px; text-transform: uppercase; color: var(--gray-dark);
+  padding-bottom: 10px; border-bottom: 1px solid var(--eggshell-dark);
+}
+
+/* ---------- Entries ---------- */
+.job { padding: 18px 0 6px; border-bottom: 1px solid var(--edge-light); }
+.job:last-child { border-bottom: none; }
+.job-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+.who { font-size: 15px; font-weight: 500; }
+.who .title { font-weight: 400; color: var(--surface-3); }
+.when { font-family: var(--mono); font-size: 11px; color: var(--gray-dark); white-space: nowrap; }
+.job ul { list-style: none; margin-top: 8px; }
+.job li {
+  position: relative; padding: 3px 0 3px 16px;
+  font-size: 13.5px; line-height: 1.55; color: var(--surface-3);
+}
+.job li::before {
+  content: "+"; position: absolute; left: 0;
+  font-family: var(--mono); color: var(--nebula-navy);
+}
+.proj-link {
+  color: var(--nebula-navy); text-decoration: none;
+  border-bottom: 1px solid var(--eggshell-dark);
+  transition: border-color var(--dur-med) var(--ease-in-out);
+}
+.proj-link:hover { border-bottom-color: var(--nebula-navy); }
+.pdesc { font-size: 13.5px; line-height: 1.55; color: var(--surface-3); margin-top: 4px; max-width: 620px; }
+.langs { margin-top: 7px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.3px; color: var(--gray-dark); }
+
+/* ---------- Skills ---------- */
+.skill-row { display: grid; grid-template-columns: 120px 1fr; gap: 18px; padding: 10px 0; border-bottom: 1px solid var(--edge-light); align-items: baseline; }
+.skill-row:last-child { border-bottom: none; }
+.skill-row .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--gray-dark); }
+.skill-row .v { font-size: 13.5px; line-height: 1.6; color: var(--surface-3); }
+
+/* ---------- Footer ---------- */
+.foot {
+  margin-top: 48px; padding-top: 14px; border-top: 1px solid var(--edge-light);
+  display: flex; justify-content: space-between;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.5px;
+  text-transform: uppercase; color: var(--gray-dark);
+}
+
+/* ---------- Print: white paper ---------- */
+@page { size: A4; margin: 14mm 16mm; }
+@media print {
+  body { background: var(--paper); font-size: 10pt; }
+  .sheet { padding: 0; max-width: none; }
+  .job, .skill-row { break-inside: avoid; }
+  .job li::before { color: var(--nebula-navy); }
+}
+@media screen and (max-width: 560px) {
+  .sheet { padding: 40px 20px 48px; }
+  .name { font-size: 32px; }
+  .skill-row { grid-template-columns: 1fr; gap: 2px; }
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header>
+    <p class="hi">Hi, I am</p>
+    <h1 class="name">Abhijit</h1>
+    <div class="role">Full Stack &amp; Blockchain Engineer</div>
+    <div class="contact">
+      <a href="mailto:abhijitkrm@gmail.com">hi@abhijitkrm.com</a>
+      <a href="https://github.com/abhijitkrm">github.com/abhijitkrm</a>
+      <span>Remote/Bengaluru</span>
+    </div>
+  </header>
+  <hr class="head-rule">
+
+  <p class="about">8+ years building scalable systems, secure smart
+  contracts, and high-performance applications across blockchain and
+  trading systems. A disciplined, competitive builder; focused on reliability, clarity,
+  and technology with real-world impact.</p>
+
+  <section>
+    <h2>Upcoming</h2>
+
+    <div class="job">
+      <div class="job-head">
+        <div class="who">monadbft</div>
+        <div class="when">Consensus &middot; Go</div>
+      </div>
+      <p class="pdesc">MonadBFT consensus ported from Rust to Go for Cosmos-EVM.</p>
+    </div>
+
+    <div class="job">
+      <div class="job-head">
+        <div class="who">oxide</div>
+        <div class="when">L1 stack &middot; Rust</div>
+      </div>
+      <p class="pdesc">An ultra-low-latency, high-throughput L1 stack built on Rust from ground up using first principles aiming for HFT.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Built</h2>
+
+    <div class="job">
+      <div class="job-head">
+        <div class="who"><a class="proj-link" href="https://github.com/abhijitkrm/sona">sona</a></div>
+        <div class="when">Design system &middot; HTML/CSS</div>
+      </div>
+      <p class="pdesc">Token-enforced design system for landing pages and printable documents: canonical register, self-contained templates, drift-guard checker. This page is built with it.</p>
+    </div>
+
+    <div class="job">
+      <div class="job-head">
+        <div class="who"><a class="proj-link" href="https://github.com/abhijitkrm/cometcli">cometcli</a></div>
+        <div class="when">CLI &middot; Go</div>
+      </div>
+      <p class="pdesc">An agentic SRE terminal for Cosmos-EVM validators.</p>
+    </div>
+
+    <div class="job">
+      <div class="job-head">
+        <div class="who"><a class="proj-link" href="https://github.com/abhijitkrm/cometduty">cometduty</a></div>
+        <div class="when">Daemon &middot; Go</div>
+      </div>
+      <p class="pdesc">Monitoring and alerting daemon for Cosmos-EVM validators: missed-block detection, jail/tombstone watch, EVM execution checks, Prometheus metrics and alerts.</p>
+    </div>
+
+    <div class="job">
+      <div class="job-head">
+        <div class="who"><a class="proj-link" href="https://github.com/abhijitkrm/faster">faster</a></div>
+        <div class="when">Explorer &middot; Go/TS</div>
+      </div>
+      <p class="pdesc">A high-performance, real-time EVM block explorer.</p>
+    </div>
+
+    <div class="job">
+      <div class="job-head">
+        <div class="who">shrt</div>
+        <div class="when">Service &middot; Multi</div>
+      </div>
+      <p class="pdesc">High-performance URL shortener: custom AOF storage engine, 256-shard index, SO_REUSEPORT multi-worker with ~150K RPS. </p>
+      <div class="langs">
+        <a class="proj-link" href="https://github.com/abhijitkrm/shrt-go">Go</a> &middot;
+        <a class="proj-link" href="https://github.com/abhijitkrm/shrt-rust">Rust</a> &middot;
+        <a class="proj-link" href="https://github.com/abhijitkrm/shrt-cpp">C++20</a> &middot;
+        <a class="proj-link" href="https://github.com/abhijitkrm/shrt-java">Java 20</a> &middot;
+        <a class="proj-link" href="https://github.com/abhijitkrm/shrt-ts">TypeScript</a>
+      </div>
+    </div>
+
+    <div class="job">
+      <div class="job-head">
+        <div class="who"><a class="proj-link" href="https://github.com/abhijitkrm/findcmd">findcmd</a></div>
+        <div class="when">CLI &middot; Shell</div>
+      </div>
+      <p class="pdesc">CLI tool for fast command-history search: interactive mode, multi-term search, clipboard support.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Skills</h2>
+    <div class="skill-row"><span class="k">Languages</span><span class="v">Python, Go, Rust, Solidity, JavaScript / TypeScript, C/C++, PHP, Bash, MQL, LaTeX</span></div>
+    <div class="skill-row"><span class="k">Stack</span><span class="v">Node.js, NestJS, Flask, React, Next.js, Vite, TailwindCSS, shadcn, GraphQL, The Graph, Privy, LangChain</span></div>
+    <div class="skill-row"><span class="k">Infra</span><span class="v">Linux, Docker, Nginx, AWS, GCP, MongoDB, MySQL, Redis, Grafana, Prometheus, PM2, Certbot, Foundry, Hardhat, Dune, MetaTrader5</span></div>
+    <div class="skill-row"><span class="k">DeFi</span><span class="v">DEX, perpetual DEX, lending, L1 stack (EVMOS), L2 stacks (OP Stack, Arbitrum Orbit), EVM protocols, gaming, NFTs, tokenomics</span></div>
+    <div class="skill-row"><span class="k">Other</span><span class="v">Product research, on-chain analytics, competitive research, documentation</span></div>
+  </section>
+
+  <div class="foot">
+    <span>Abhijit</span>
+    <span>Sona light</span>
+  </div>
+
+</div>
+</body>
+</html>
