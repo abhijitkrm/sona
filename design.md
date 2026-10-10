@@ -181,6 +181,60 @@ Load via Google Fonts (`Space Grotesk: 400,500,700` and
 `JetBrains Mono: 400,500`) or self-host. Display text may add
 `font-feature-settings: "ss02"` for the geometric alternate shapes.
 
+### CJK Font Stacks
+
+For Chinese, Japanese, and Korean content, extend the font stack with
+language-optimized fallbacks:
+
+```css
+/* Chinese (Simplified) */
+--sans-zh-cn: "Space Grotesk", "Noto Sans SC", "PingFang SC",
+              "Microsoft YaHei", "Source Han Sans SC", sans-serif;
+--serif-zh-cn: "Noto Serif SC", "Source Han Serif SC", "Songti SC",
+               "SimSun", serif;
+
+/* Chinese (Traditional) */
+--sans-zh-tw: "Space Grotesk", "Noto Sans TC", "PingFang TC",
+              "Microsoft JhengHei", "Source Han Sans TC", sans-serif;
+--serif-zh-tw: "Noto Serif TC", "Source Han Serif TC", "LiSong Pro",
+               "PMingLiU", serif;
+
+/* Japanese */
+--sans-ja: "Space Grotesk", "Noto Sans JP", "Hiragino Sans",
+           "Yu Gothic", "Meiryo", "Source Han Sans JP", sans-serif;
+--serif-ja: "Noto Serif JP", "YuMincho", "Hiragino Mincho ProN",
+            "Source Han Serif JP", serif;
+
+/* Korean */
+--sans-ko: "Space Grotesk", "Noto Sans KR", "Malgun Gothic",
+           "Apple SD Gothic Neo", "Source Han Sans KR", sans-serif;
+--serif-ko: "Noto Serif KR", "Nanum Myeongjo", "Batang",
+            "Source Han Serif K", serif;
+```
+
+**Implementation**: Use `lang` attribute to select the appropriate stack:
+
+```css
+:lang(zh-CN) { font-family: var(--sans-zh-cn); }
+:lang(zh-TW) { font-family: var(--sans-zh-tw); }
+:lang(ja)    { font-family: var(--sans-ja); }
+:lang(ko)    { font-family: var(--sans-ko); }
+```
+
+**CJK Typography Adjustments**:
+
+| Property | Latin | CJK |
+|----------|-------|-----|
+| Letter-spacing | 0.02em | 0 (built into glyphs) |
+| Line-height | 1.5 | 1.7-1.8 (taller glyphs) |
+| Body size | 16px | 15-16px (adjust for density) |
+
+**Google Fonts for CJK**:
+
+```html
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500&family=Noto+Sans+JP:wght@400;500&family=Noto+Sans+KR:wght@400;500&display=swap" rel="stylesheet">
+```
+
 ### Size scale (px, screen-first)
 
 | Role | Size | Weight | Line-height | Use |
@@ -670,3 +724,97 @@ register any new hex in `tokens.json` before it ships.
   information on dark; `--ink-40`/`--ink-30` are decorative or
   large-display only. On light, small text floors at `--gray-dark`;
   `--gray-mid` is for large text and decoration.
+
+---
+
+## 9. Anti-Patterns
+
+**What not to do.** Every rule below has broken a design; learn from it.
+
+### Visual Anti-Patterns
+
+| Anti-Pattern | Why It Fails | Correct Approach |
+|--------------|--------------|------------------|
+| Pure white `#ffffff` background | Too harsh, clinical | Use `--eggshell` or `--void` |
+| Cool-toned grays | Clashes with warm palette | Use registered gray tokens |
+| `rgba()` in print CSS | WeasyPrint double-rectangle bug | Use `--print-ink-*` solids |
+| Synthetic bold (700+) on serif | Destroys letterforms | Use weight 500 max |
+| Drop shadows on dark surfaces | Invisible, adds noise | Use fill/stroke hierarchy |
+| Gradients anywhere | "Generated filler" aesthetic | Flat fills only |
+| Multiple accent colors | Dilutes hierarchy | One accent per context |
+| Decorative borders | Visual noise | Borders encode separation only |
+| Icon fonts | Accessibility issues, load time | Inline SVG |
+| `!important` overrides | Specificity war | Fix the cascade |
+
+### Layout Anti-Patterns
+
+| Anti-Pattern | Why It Fails | Correct Approach |
+|--------------|--------------|------------------|
+| Margins outside the scale | Inconsistent rhythm | Use 4px-based spacing |
+| Random radius values | Visual inconsistency | Only 10/20/30/999 |
+| Centering everything | Loses reading flow | Left-align body text |
+| Full-width text | Line length hurts readability | Max 70 characters |
+| Fixed heights on content | Content overflow | Use min-height or auto |
+| `z-index: 9999` | Layer chaos | Use 10/20/100/200 scale |
+
+### Typography Anti-Patterns
+
+| Anti-Pattern | Why It Fails | Correct Approach |
+|--------------|--------------|------------------|
+| More than 2 fonts | Visual noise | One sans, one mono |
+| Thin weights (100-300) | Illegible on dark | 400 minimum |
+| ALL CAPS body text | Unreadable | Uppercase for labels only |
+| Justified text without hyphenation | Ugly word spacing | Left-align or add hyphens |
+| Line-height > 1.7 | Floaty, loses cohesion | 1.5-1.6 for body |
+| Letter-spacing on body text | Reduces readability | 0 or 0.02em max |
+| Mixing font sizes freely | No scale discipline | Use the type scale |
+
+### Code Anti-Patterns
+
+| Anti-Pattern | Why It Fails | Correct Approach |
+|--------------|--------------|------------------|
+| Inline styles | Unmaintainable | Use classes |
+| Magic numbers | Unexplained values | Use CSS variables |
+| Duplicate hex values | Drift, inconsistency | Reference tokens |
+| `px` for font-size in print | Scaling issues | Use `pt` for print |
+| Unregistered tokens | Breaks validation | Add to `tokens.json` first |
+| Browser-prefixed CSS without fallback | Incomplete support | Use autoprefixer or fallbacks |
+
+### Interaction Anti-Patterns
+
+| Anti-Pattern | Why It Fails | Correct Approach |
+|--------------|--------------|------------------|
+| Hover-only states | Touch devices excluded | Pair with focus |
+| Color-only feedback | Accessibility fail | Add shape/icon change |
+| Animations > 300ms | Feels sluggish | 150-300ms for UI |
+| No `prefers-reduced-motion` | Vestibular disorders | Always check preference |
+| Missing focus styles | Keyboard users lost | `:focus-visible` outline |
+| Click targets < 44px | Touch fail | 44px minimum |
+
+### Content Anti-Patterns
+
+| Anti-Pattern | Why It Fails | Correct Approach |
+|--------------|--------------|------------------|
+| Lorem ipsum in production | Placeholder shipped | Real content always |
+| "Click here" links | No context for screen readers | Descriptive link text |
+| Images without alt | Accessibility fail | Describe every image |
+| Empty headings | Broken outline | Remove or fill |
+| Orphaned headings | Heading with no content after | Keep with content |
+
+### Process Anti-Patterns
+
+| Anti-Pattern | Why It Fails | Correct Approach |
+|--------------|--------------|------------------|
+| Designing without tokens | Drift from system | Start from tokens.json |
+| Skipping mobile design | 60%+ traffic ignored | Mobile-first or concurrent |
+| Not testing print | PDF broken | Preview before shipping |
+| "It works on my machine" | Environment differences | Test in CI/fresh browser |
+| Ignoring validation errors | Technical debt | Fix immediately |
+
+### The Subtractive Rule
+
+> If removing a line, border, decoration, or element preserves the page's
+> structure and hierarchy, delete it.
+
+Every visual element must **encode separation, state, or relationship**.
+Decoration for its own sake is noise.

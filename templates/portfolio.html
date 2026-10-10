@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio - Sona Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Portfolio - Sona light theme (eggshell + paper, navy accent).
+   3-6 page visual project showcase. Token register: ../tokens.json
+   Render: weasyprint portfolio.html portfolio.pdf
+   ============================================================ */
+:root {
+  --void:           #000000;
+  --eggshell:       #f1f4f4;
+  --eggshell-dark:  #cfdadc;
+  --paper:          #ffffff;
+  --edge-light:     #e1e1e1;
+  --gray-medium:    #bbbbbb;
+  --gray-mid:       #808080;
+  --gray-dark:      #666666;
+  --surface-3:      #212121;
+  --mint:           #22e2a8;
+  --cyan:           #40b3ff;
+  --nebula-navy:    #1a2340;
+  --sans: "Space Grotesk", "The Future", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", "The Future Mono", "Space Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-med: 300ms;
+}
+
+@page { size: A4; margin: 12mm 15mm; background: #f1f4f4; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--sans);
+  font-size: 10pt;
+  line-height: 1.5;
+  color: var(--void);
+  background: var(--eggshell);
+  -webkit-font-smoothing: antialiased;
+}
+
+@media screen {
+  html { background: #181818; }
+  body {
+    max-width: 210mm;
+    margin: 32px auto;
+    padding: 12mm 15mm;
+    box-shadow: 0 8px 24px rgba(30, 31, 32, 0.12);
+  }
+}
+
+/* ---------- Cover ---------- */
+.cover {
+  min-height: 100mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 24pt 0;
+  border-bottom: 1px solid var(--eggshell-dark);
+  margin-bottom: 24pt;
+  break-after: page;
+}
+.cover .eyebrow {
+  font-family: var(--mono);
+  font-size: 9pt;
+  font-weight: 500;
+  letter-spacing: 0.5pt;
+  text-transform: uppercase;
+  color: var(--gray-dark);
+}
+.cover h1 {
+  font-size: 36pt;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-top: 12pt;
+  color: var(--void);
+}
+.cover .subtitle {
+  font-size: 14pt;
+  color: var(--nebula-navy);
+  font-weight: 500;
+  margin-top: 8pt;
+}
+.cover .meta {
+  font-family: var(--mono);
+  font-size: 9pt;
+  color: var(--gray-dark);
+  margin-top: 20pt;
+  display: flex;
+  gap: 16pt;
+}
+.cover .meta a {
+  color: var(--nebula-navy);
+  text-decoration: none;
+}
+
+/* ---------- Section ---------- */
+.section {
+  margin-top: 28pt;
+  break-inside: avoid;
+}
+.section h2 {
+  font-family: var(--mono);
+  font-size: 9pt;
+  font-weight: 500;
+  letter-spacing: 0.5pt;
+  text-transform: uppercase;
+  color: var(--gray-dark);
+  padding-bottom: 8pt;
+  border-bottom: 1px solid var(--eggshell-dark);
+  margin-bottom: 16pt;
+}
+
+/* ---------- Project Card ---------- */
+.project {
+  background: var(--paper);
+  border-radius: 8pt;
+  padding: 18pt 20pt;
+  margin-bottom: 16pt;
+  break-inside: avoid;
+}
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12pt;
+  flex-wrap: wrap;
+}
+.project-name {
+  font-size: 14pt;
+  font-weight: 500;
+  color: var(--void);
+}
+.project-name a {
+  color: var(--nebula-navy);
+  text-decoration: none;
+  border-bottom: 1px solid var(--eggshell-dark);
+}
+.project-name a:hover {
+  border-bottom-color: var(--nebula-navy);
+}
+.project-meta {
+  font-family: var(--mono);
+  font-size: 8pt;
+  color: var(--gray-dark);
+  letter-spacing: 0.3pt;
+}
+.project-desc {
+  font-size: 10pt;
+  line-height: 1.55;
+  color: var(--surface-3);
+  margin-top: 8pt;
+  max-width: 90%;
+}
+.project-tags {
+  display: flex;
+  gap: 6pt;
+  flex-wrap: wrap;
+  margin-top: 12pt;
+}
+.tag {
+  font-family: var(--mono);
+  font-size: 7.5pt;
+  font-weight: 500;
+  letter-spacing: 0.4pt;
+  text-transform: uppercase;
+  color: var(--nebula-navy);
+  background: var(--eggshell);
+  padding: 3pt 8pt;
+  border-radius: 999px;
+}
+
+/* ---------- Project Grid (2-col for smaller items) ---------- */
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12pt;
+}
+.project-grid .project {
+  margin-bottom: 0;
+}
+
+/* ---------- Metrics Strip ---------- */
+.metrics {
+  display: flex;
+  gap: 20pt;
+  padding: 16pt 0;
+  border-top: 1px solid var(--edge-light);
+  border-bottom: 1px solid var(--edge-light);
+  margin: 20pt 0;
+}
+.metric {
+  flex: 1;
+}
+.metric-value {
+  font-size: 18pt;
+  font-weight: 500;
+  color: var(--nebula-navy);
+  font-variant-numeric: tabular-nums;
+}
+.metric-label {
+  font-family: var(--mono);
+  font-size: 7.5pt;
+  font-weight: 500;
+  letter-spacing: 0.5pt;
+  text-transform: uppercase;
+  color: var(--gray-mid);
+  margin-top: 2pt;
+}
+
+/* ---------- Image Placeholder ---------- */
+.image-frame {
+  background: var(--edge-light);
+  border-radius: 6pt;
+  aspect-ratio: 16/9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 12pt;
+  color: var(--gray-mid);
+  font-family: var(--mono);
+  font-size: 8pt;
+}
+
+/* ---------- Footer ---------- */
+.doc-foot {
+  margin-top: 28pt;
+  padding-top: 12pt;
+  border-top: 1px solid var(--edge-light);
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 8pt;
+  letter-spacing: 0.4pt;
+  color: var(--gray-mid);
+  text-transform: uppercase;
+}
+
+/* ---------- Print ---------- */
+@media print {
+  body { background: var(--eggshell); }
+  .cover { break-after: page; }
+  .project { break-inside: avoid; }
+}
+
+@media screen and (max-width: 640px) {
+  body { margin: 0; padding: 10mm 6mm; }
+  .project-grid { grid-template-columns: 1fr; }
+  .cover h1 { font-size: 28pt; }
+}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <span class="eyebrow">Portfolio</span>
+  <h1>Alex Chen</h1>
+  <div class="subtitle">Product Designer</div>
+  <div class="meta">
+    <span>hello@alexchen.design</span>
+    <a href="https://alexchen.design">alexchen.design</a>
+    <span>San Francisco</span>
+  </div>
+</div>
+
+<div class="metrics">
+  <div class="metric"><div class="metric-value">8+</div><div class="metric-label">Years experience</div></div>
+  <div class="metric"><div class="metric-value">40+</div><div class="metric-label">Projects shipped</div></div>
+  <div class="metric"><div class="metric-value">12M</div><div class="metric-label">Users impacted</div></div>
+  <div class="metric"><div class="metric-value">3</div><div class="metric-label">Design systems</div></div>
+</div>
+
+<div class="section">
+  <h2>Featured Work</h2>
+
+  <div class="project">
+    <div class="project-header">
+      <div class="project-name"><a href="#">Meridian Dashboard</a></div>
+      <div class="project-meta">2024 &middot; Lead Designer</div>
+    </div>
+    <p class="project-desc">Complete redesign of the analytics dashboard serving 50K+ daily active users. Reduced time-to-insight by 40% through improved information hierarchy and progressive disclosure patterns.</p>
+    <div class="project-tags">
+      <span class="tag">Product Design</span>
+      <span class="tag">Design System</span>
+      <span class="tag">Data Viz</span>
+    </div>
+    <div class="image-frame">[Project Screenshot]</div>
+  </div>
+
+  <div class="project">
+    <div class="project-header">
+      <div class="project-name"><a href="#">Helios Mobile</a></div>
+      <div class="project-meta">2023 &middot; Senior Designer</div>
+    </div>
+    <p class="project-desc">Native iOS and Android app for field operations teams. Designed offline-first workflows that sync seamlessly when connectivity returns.</p>
+    <div class="project-tags">
+      <span class="tag">Mobile</span>
+      <span class="tag">iOS</span>
+      <span class="tag">Android</span>
+    </div>
+    <div class="image-frame">[Project Screenshot]</div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Other Projects</h2>
+  <div class="project-grid">
+    <div class="project">
+      <div class="project-header">
+        <div class="project-name">Keystone CRM</div>
+        <div class="project-meta">2023</div>
+      </div>
+      <p class="project-desc">Enterprise CRM redesign focusing on pipeline visibility and deal management.</p>
+      <div class="project-tags">
+        <span class="tag">Enterprise</span>
+        <span class="tag">SaaS</span>
+      </div>
+    </div>
+    <div class="project">
+      <div class="project-header">
+        <div class="project-name">Apex Checkout</div>
+        <div class="project-meta">2022</div>
+      </div>
+      <p class="project-desc">Streamlined checkout flow that increased conversion by 23%.</p>
+      <div class="project-tags">
+        <span class="tag">E-commerce</span>
+        <span class="tag">Conversion</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="doc-foot">
+  <span>Alex Chen</span>
+  <span>Portfolio 2024</span>
+</div>
+
+</body>
+</html>

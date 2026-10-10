@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slides - Sona Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Slides - Sona dark theme (void + surface, mint/cyan accents).
+   16:9 presentation deck. Token register: ../tokens.json
+   ============================================================ */
+:root {
+  --void:           #000000;
+  --ink:            #ffffff;
+  --ink-80:         #ffffffcc;
+  --ink-60:         #ffffff99;
+  --ink-50:         #ffffff80;
+  --ink-40:         #ffffff66;
+  --ink-30:         #ffffff4d;
+  --fill-20:        #ffffff33;
+  --fill-10:        #ffffff1a;
+  --stroke-20:      #ffffff33;
+  --stroke-13:      #ffffff21;
+  --surface-1:      #181818;
+  --surface-2:      #1e1f20;
+  --surface-3:      #212121;
+  --mint:           #22e2a8;
+  --cyan:           #40b3ff;
+  --nebula-navy:    #1a2340;
+  --sans: "Space Grotesk", "The Future", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", "The Future Mono", "Space Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@page { size: 1920px 1080px; margin: 0; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--sans);
+  background: var(--void);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Slide Container ---------- */
+.slide {
+  width: 1920px;
+  height: 1080px;
+  padding: 80px 100px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  break-after: page;
+  background: var(--void);
+}
+
+/* ---------- Slide Header ---------- */
+.slide-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 60px;
+}
+.slide-logo {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-50);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.slide-number {
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--ink-40);
+}
+
+/* ---------- Title Slide ---------- */
+.slide--title {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.slide--title .eyebrow {
+  font-family: var(--mono);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--mint);
+  margin-bottom: 24px;
+}
+.slide--title h1 {
+  font-size: 96px;
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  max-width: 1400px;
+}
+.slide--title .subtitle {
+  font-size: 32px;
+  color: var(--ink-60);
+  margin-top: 24px;
+  max-width: 900px;
+}
+.slide--title .meta {
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--ink-40);
+  margin-top: 60px;
+}
+
+/* ---------- Section Slide ---------- */
+.slide--section {
+  justify-content: center;
+}
+.slide--section .section-num {
+  font-family: var(--mono);
+  font-size: 18px;
+  color: var(--mint);
+  margin-bottom: 16px;
+}
+.slide--section h2 {
+  font-size: 72px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+/* ---------- Content Slide ---------- */
+.slide--content h3 {
+  font-size: 48px;
+  font-weight: 500;
+  line-height: 1.2;
+  margin-bottom: 40px;
+}
+.slide--content .body {
+  font-size: 28px;
+  line-height: 1.5;
+  color: var(--ink-60);
+  max-width: 1400px;
+}
+.slide--content ul {
+  list-style: none;
+  margin-top: 32px;
+}
+.slide--content li {
+  font-size: 28px;
+  line-height: 1.5;
+  color: var(--ink-60);
+  padding: 12px 0 12px 40px;
+  position: relative;
+}
+.slide--content li::before {
+  content: "+";
+  position: absolute;
+  left: 0;
+  font-family: var(--mono);
+  color: var(--mint);
+}
+
+/* ---------- Two Column Slide ---------- */
+.slide--two-col .cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  flex: 1;
+}
+.slide--two-col h3 {
+  font-size: 48px;
+  font-weight: 500;
+  margin-bottom: 40px;
+}
+.col h4 {
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--ink-80);
+  margin-bottom: 16px;
+}
+.col p {
+  font-size: 22px;
+  line-height: 1.5;
+  color: var(--ink-60);
+}
+
+/* ---------- Stats Slide ---------- */
+.slide--stats .stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  margin-top: 60px;
+}
+.stat {
+  text-align: center;
+  padding: 40px;
+  background: var(--surface-2);
+  border: 1px solid var(--stroke-13);
+  border-radius: 20px;
+}
+.stat-value {
+  font-size: 72px;
+  font-weight: 500;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.stat-label {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--ink-50);
+  margin-top: 12px;
+}
+
+/* ---------- Quote Slide ---------- */
+.slide--quote {
+  justify-content: center;
+}
+.slide--quote blockquote {
+  font-size: 48px;
+  line-height: 1.4;
+  color: var(--ink-80);
+  max-width: 1200px;
+  padding-left: 40px;
+  border-left: 4px solid var(--stroke-20);
+}
+.slide--quote cite {
+  display: block;
+  font-family: var(--mono);
+  font-size: 16px;
+  font-style: normal;
+  color: var(--ink-50);
+  margin-top: 32px;
+  padding-left: 40px;
+}
+
+/* ---------- Footer ---------- */
+.slide-footer {
+  position: absolute;
+  bottom: 40px;
+  left: 100px;
+  right: 100px;
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-40);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ---------- Screen Preview ---------- */
+@media screen {
+  body {
+    padding: 40px;
+    background: var(--surface-1);
+  }
+  .slide {
+    margin: 0 auto 40px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    transform: scale(0.5);
+    transform-origin: top center;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Title Slide -->
+<div class="slide slide--title">
+  <span class="eyebrow">Q4 2024 Report</span>
+  <h1>Building the future of work</h1>
+  <p class="subtitle">Quarterly business review and strategic priorities</p>
+  <p class="meta">October 2024 &middot; Confidential</p>
+</div>
+
+<!-- Section Slide -->
+<div class="slide slide--section">
+  <div class="slide-header">
+    <span class="slide-logo">Meridian</span>
+    <span class="slide-number">01</span>
+  </div>
+  <span class="section-num">01</span>
+  <h2>Performance Overview</h2>
+  <div class="slide-footer">
+    <span>Q4 2024</span>
+    <span>Confidential</span>
+  </div>
+</div>
+
+<!-- Stats Slide -->
+<div class="slide slide--stats">
+  <div class="slide-header">
+    <span class="slide-logo">Meridian</span>
+    <span class="slide-number">02</span>
+  </div>
+  <h3>Key metrics this quarter</h3>
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-value">$4.2M</div>
+      <div class="stat-label">Revenue</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">12K</div>
+      <div class="stat-label">Active users</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">94%</div>
+      <div class="stat-label">Retention</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">52</div>
+      <div class="stat-label">NPS Score</div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>Q4 2024</span>
+    <span>Confidential</span>
+  </div>
+</div>
+
+<!-- Content Slide -->
+<div class="slide slide--content">
+  <div class="slide-header">
+    <span class="slide-logo">Meridian</span>
+    <span class="slide-number">03</span>
+  </div>
+  <h3>Strategic priorities for next quarter</h3>
+  <ul>
+    <li>Launch enterprise tier with SSO and advanced permissions</li>
+    <li>Expand API capabilities for third-party integrations</li>
+    <li>Reduce onboarding time from 14 days to 3 days</li>
+    <li>Scale infrastructure for 100K concurrent users</li>
+  </ul>
+  <div class="slide-footer">
+    <span>Q4 2024</span>
+    <span>Confidential</span>
+  </div>
+</div>
+
+<!-- Two Column Slide -->
+<div class="slide slide--two-col">
+  <div class="slide-header">
+    <span class="slide-logo">Meridian</span>
+    <span class="slide-number">04</span>
+  </div>
+  <h3>Comparing approaches</h3>
+  <div class="cols">
+    <div class="col">
+      <h4>Current State</h4>
+      <p>Manual workflows requiring 3+ tools to complete basic tasks. Average completion time: 45 minutes.</p>
+    </div>
+    <div class="col">
+      <h4>With Meridian</h4>
+      <p>Unified workspace with automated handoffs. Average completion time: 12 minutes. 73% faster.</p>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>Q4 2024</span>
+    <span>Confidential</span>
+  </div>
+</div>
+
+<!-- Quote Slide -->
+<div class="slide slide--quote">
+  <div class="slide-header">
+    <span class="slide-logo">Meridian</span>
+    <span class="slide-number">05</span>
+  </div>
+  <blockquote>
+    Meridian replaced four different tools for our team. The time savings alone paid for itself in the first month.
+  </blockquote>
+  <cite>Sarah Chen, VP Engineering at Helios</cite>
+  <div class="slide-footer">
+    <span>Q4 2024</span>
+    <span>Confidential</span>
+  </div>
+</div>
+
+</body>
+</html>

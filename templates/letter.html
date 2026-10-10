@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Letter - Sona Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Letter - Sona light theme (eggshell + paper, navy accent).
+   Formal correspondence. Token register: ../tokens.json
+   Render: weasyprint letter.html letter.pdf
+   ============================================================ */
+:root {
+  --void:           #000000;
+  --eggshell:       #f1f4f4;
+  --eggshell-dark:  #cfdadc;
+  --paper:          #ffffff;
+  --edge-light:     #e1e1e1;
+  --gray-medium:    #bbbbbb;
+  --gray-mid:       #808080;
+  --gray-dark:      #666666;
+  --surface-3:      #212121;
+  --nebula-navy:    #1a2340;
+  --sans: "Space Grotesk", "The Future", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", "The Future Mono", "Space Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@page { size: A4; margin: 25mm; background: #ffffff; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.6;
+  color: var(--void);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+@media screen {
+  html { background: #181818; }
+  body {
+    max-width: 210mm;
+    margin: 32px auto;
+    padding: 25mm;
+    box-shadow: 0 8px 24px rgba(30, 31, 32, 0.12);
+  }
+}
+
+/* ---------- Letterhead ---------- */
+.letterhead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 20pt;
+  border-bottom: 1px solid var(--edge-light);
+  margin-bottom: 28pt;
+}
+.sender-info {
+  text-align: right;
+}
+.sender-name {
+  font-size: 14pt;
+  font-weight: 500;
+  color: var(--nebula-navy);
+}
+.sender-details {
+  font-size: 9pt;
+  color: var(--gray-dark);
+  margin-top: 4pt;
+  line-height: 1.5;
+}
+.sender-details a {
+  color: var(--nebula-navy);
+  text-decoration: none;
+}
+.logo {
+  font-family: var(--mono);
+  font-size: 12pt;
+  font-weight: 500;
+  color: var(--void);
+  letter-spacing: -0.5pt;
+}
+
+/* ---------- Date ---------- */
+.date {
+  font-size: 10pt;
+  color: var(--gray-dark);
+  margin-bottom: 24pt;
+}
+
+/* ---------- Recipient ---------- */
+.recipient {
+  margin-bottom: 28pt;
+}
+.recipient-name {
+  font-weight: 500;
+  color: var(--void);
+}
+.recipient-details {
+  font-size: 10pt;
+  color: var(--surface-3);
+  margin-top: 2pt;
+  line-height: 1.5;
+}
+
+/* ---------- Subject ---------- */
+.subject {
+  font-weight: 500;
+  color: var(--nebula-navy);
+  margin-bottom: 20pt;
+  padding-bottom: 12pt;
+  border-bottom: 1px solid var(--edge-light);
+}
+.subject-label {
+  font-family: var(--mono);
+  font-size: 8pt;
+  font-weight: 500;
+  letter-spacing: 0.5pt;
+  text-transform: uppercase;
+  color: var(--gray-dark);
+  margin-right: 8pt;
+}
+
+/* ---------- Body ---------- */
+.letter-body {
+  color: var(--surface-3);
+}
+.letter-body p {
+  margin-bottom: 14pt;
+  text-align: justify;
+  hyphens: auto;
+}
+.letter-body p:last-child {
+  margin-bottom: 0;
+}
+.salutation {
+  margin-bottom: 14pt;
+}
+.closing {
+  margin-top: 28pt;
+}
+
+/* ---------- Signature ---------- */
+.signature {
+  margin-top: 48pt;
+}
+.signature-line {
+  width: 180pt;
+  border-top: 1px solid var(--edge-light);
+  padding-top: 8pt;
+}
+.signature-name {
+  font-weight: 500;
+  color: var(--void);
+}
+.signature-title {
+  font-size: 10pt;
+  color: var(--gray-dark);
+  margin-top: 2pt;
+}
+
+/* ---------- Enclosures ---------- */
+.enclosures {
+  margin-top: 36pt;
+  padding-top: 14pt;
+  border-top: 1px solid var(--edge-light);
+}
+.enclosures-label {
+  font-family: var(--mono);
+  font-size: 8pt;
+  font-weight: 500;
+  letter-spacing: 0.5pt;
+  text-transform: uppercase;
+  color: var(--gray-dark);
+  margin-bottom: 6pt;
+}
+.enclosures ul {
+  list-style: none;
+  font-size: 10pt;
+  color: var(--surface-3);
+}
+.enclosures li {
+  padding: 2pt 0;
+}
+
+/* ---------- Footer ---------- */
+.letter-foot {
+  position: fixed;
+  bottom: 25mm;
+  left: 25mm;
+  right: 25mm;
+  font-family: var(--mono);
+  font-size: 8pt;
+  color: var(--gray-mid);
+  text-align: center;
+}
+
+/* ---------- Print ---------- */
+@media print {
+  body { background: var(--paper); }
+  .letter-foot { position: fixed; }
+}
+
+@media screen and (max-width: 640px) {
+  body { margin: 0; padding: 20mm 15mm; }
+  .letterhead { flex-direction: column; gap: 16pt; }
+  .sender-info { text-align: left; }
+}
+</style>
+</head>
+<body>
+
+<div class="letterhead">
+  <div class="logo">Meridian Labs</div>
+  <div class="sender-info">
+    <div class="sender-name">Sarah Chen</div>
+    <div class="sender-details">
+      Chief Executive Officer<br>
+      Meridian Labs, Inc.<br>
+      548 Market Street, Suite 400<br>
+      San Francisco, CA 94104<br>
+      <a href="mailto:sarah@meridian.example">sarah@meridian.example</a>
+    </div>
+  </div>
+</div>
+
+<div class="date">October 15, 2024</div>
+
+<div class="recipient">
+  <div class="recipient-name">Mr. David Park</div>
+  <div class="recipient-details">
+    Director of Engineering<br>
+    Helios Technologies<br>
+    1200 Innovation Drive<br>
+    Austin, TX 78701
+  </div>
+</div>
+
+<div class="subject">
+  <span class="subject-label">Re:</span> Partnership Proposal for Enterprise Integration
+</div>
+
+<div class="letter-body">
+  <p class="salutation">Dear Mr. Park,</p>
+
+  <p>Thank you for taking the time to meet with our team last week. Following our discussion about the potential integration between Meridian and the Helios platform, I am writing to formally outline the partnership framework we discussed.</p>
+
+  <p>As we explored during our meeting, the integration would provide significant value to both our customer bases. Helios users would gain access to Meridian's project management capabilities directly within their existing workflow, while our users would benefit from the robust analytics and reporting features that Helios provides.</p>
+
+  <p>Our technical team has completed the initial feasibility assessment and confirms that the proposed API integration can be implemented within the timeline we discussed. We are prepared to begin the technical specification phase immediately upon your approval.</p>
+
+  <p>The key terms of our proposed partnership include joint marketing efforts, shared revenue on referred customers, and a dedicated integration support channel for enterprise clients. The complete proposal document is enclosed for your review.</p>
+
+  <p>I believe this partnership represents an excellent opportunity for both organizations to expand our market presence while delivering enhanced value to our customers. I would welcome the opportunity to discuss any questions or modifications you may have.</p>
+
+  <p class="closing">We look forward to your response and the possibility of working together.</p>
+
+  <p>Sincerely,</p>
+</div>
+
+<div class="signature">
+  <div class="signature-line">
+    <div class="signature-name">Sarah Chen</div>
+    <div class="signature-title">Chief Executive Officer</div>
+  </div>
+</div>
+
+<div class="enclosures">
+  <div class="enclosures-label">Enclosures</div>
+  <ul>
+    <li>Partnership Proposal Document (12 pages)</li>
+    <li>Technical Integration Specification</li>
+    <li>Revenue Sharing Framework</li>
+  </ul>
+</div>
+
+</body>
+</html>
